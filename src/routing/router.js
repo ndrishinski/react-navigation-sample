@@ -32,7 +32,7 @@ const BottomNavigator = createBottomTabNavigator({
     Messages: MessagesStuff,
     CustomerSupport: CustomerSupportStuff,
 }, {
-   
+   initialRouteName: 'Messages',
     
     //   defaultNavigationOptions: ({ navigation }) => ({
     //     headerTitleStyle: {
@@ -79,6 +79,9 @@ const SwitchNavigator = createSwitchNavigator({
   
 const DrawerNavigator = createDrawerNavigator({
   Main: AppNavigator,
+}, {
+  contentComponent: Drawer,
+  drawerWidth: 300
 });
 
 // const final = createStackNavigator({

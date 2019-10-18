@@ -1,23 +1,25 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-import firebase from 'firebase';
+import * as firebase from 'firebase';
 
 export default class Messages extends React.Component {
   static navigationOptions = {
     title: 'messages',
   };
 
+  state = {
+    messages: []
+  }
+
   componentDidMount() {
     // gets data and listens for changes
     let result = [];
     var ref = firebase.database().ref('overall/users/-LrVM95eP6J4MXWncxW8/messages')
     ref.once('value', (snapShot) => {
-      snapShot.forEach(item => {
-        console.log('item', item.val(), item.key)
-      })
+      this.setState({messages: Object.values(snapShot.val())})
     })
-    
+  
   }
 
   handlePress () {
@@ -46,18 +48,21 @@ export default class Messages extends React.Component {
   }
 
   render() {
+    console.log('state', this.state.messages)
     return (
       <View
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
           flex: 1,
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center'
         }}>
         <Text onPress={() => this.handlePress()}>Messages Page</Text>
         <Text style={{margin: 40}} onPress={() => this.handlePress2()}>Press for admins</Text>
         <Text style={{margin: 40}} onPress={() => this.readHandlePress2()}>Press for Read Admins</Text>
+        <View style={{backgroundColor: 'lightGrey', height: 300, width: 300}}>
+        </View>
       </View>
     );
   }

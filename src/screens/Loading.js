@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 import * as firebase from 'firebase';
 
 var firebaseConfig = {
-    
+  
   };
 
 const intialize = firebase.initializeApp(firebaseConfig);

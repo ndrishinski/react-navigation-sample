@@ -12,7 +12,6 @@ export default class CustomerSupport extends React.Component {
         }
       }
     render() {
-        console.log('props from customersupport', this.props);
         return (
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                 <Text>CustomerSupport Page</Text>

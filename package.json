@@ -11,6 +11,7 @@
     "nick-ios": "react-native start --reset-cache && react-native run-ios"
   },
   "dependencies": {
+    "firebase": "^7.2.1",
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-gesture-handler": "^1.4.1",

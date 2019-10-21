@@ -23,35 +23,22 @@ export default class RNF extends Component {
     }
   }
 
-  componentDidMount() {
-    // get user image or see #70, save url to db
-    let ref = firebase.storage().ref('12345').child('dp.jpg')
-    ref.getDownloadURL()
-    .then(res => {
-      this.setState({url: res})
-    })
-  }
+  // see https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Install.md
 
-  openPicker(){
+  hiddenFunc(image) {
     this.setState({ loading: true })
     const Blob = RNFetchBlob.polyfill.Blob
     const fs = RNFetchBlob.fs
     window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
     window.Blob = Blob
     // //const { uid } = this.state.user
-    const uid = "12345"
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true
-    }).then(image => {
-      console.log(image);
-      
-      const imagePath = image.path
+    // const uid = `${Math.floor(Math.random() * 650)}`
+    const uid = 'newguy'
+    const imagePath = image.path
 
       let uploadBlob = null
 
-      const imageRef = firebase.storage().ref(uid).child("dp.jpg")
+      const imageRef = firebase.storage().ref(uid).child(new Date().getTime() + "dp.jpg")
       let mime = 'image/jpg'
       fs.readFile(imagePath, 'base64')
         .then((data) => {
@@ -82,13 +69,60 @@ export default class RNF extends Component {
         .catch((error) => {
           console.log(error)
         })
+  }
+
+  componentDidMount() {
+    // get user image or see #70, save url to db
+    let ref = firebase.storage().ref('12345').child('dp.jpg')
+    ref.getDownloadURL()
+    .then(res => {
+      this.setState({url: res})
+    })
+  }
+
+  openPicker(){
+    
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+      this.hiddenFunc(image)
     })
     .catch((error) => {
       console.log(error)
     })
 }
 
+addManyPhotos() {
+  ImagePicker.openPicker({
+    multiple: true
+  }).then(images => {
+    console.log('images', images);
+    images.map(item => this.hiddenFunc(item))
+  });
+}
 
+addSinglePhoto() {
+  ImagePicker.openPicker({
+    width: 300,
+    height: 400,
+    cropping: true
+  }).then(image => {
+    this.hiddenFunc(image)
+  });
+}
+
+launchCamera() {
+  ImagePicker.openCamera({
+    width: 300,
+    height: 400,
+    cropping: true,
+  }).then(image => {
+    this.hiddenFunc(image);
+  });
+}
 
   render() {
     const dpr = this.state.dp ? (<TouchableOpacity onPress={ () => this.openPicker() }><Image
@@ -107,8 +141,22 @@ export default class RNF extends Component {
 
     return (
       <View style={styles.container}>
-        { dps }
+        {/* { dps } */}
         <View>
+          <View>
+          <Button
+            onPress={ () => this.addManyPhotos() }
+            title={ "Add Many Photos" }
+          />
+          <Button
+            onPress={ () => this.addSinglePhoto() }
+            title={ "Add single photo" }
+          />
+          <Button
+            onPress={ () => this.launchCamera() }
+            title={ "Take a photo" }
+          />
+          </View>
           {this.state.url ? 
           <Image source={{uri: this.state.url}} style={{height: 100, width: 100}} /> 
         : null}

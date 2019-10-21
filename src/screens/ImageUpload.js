@@ -18,8 +18,18 @@ export default class RNF extends Component {
    super(props)
    this.state = {
      loading: false,
-     dp: null
+     dp: null,
+     url: '',
     }
+  }
+
+  componentDidMount() {
+    // get user image or see #70, save url to db
+    let ref = firebase.storage().ref('12345').child('dp.jpg')
+    ref.getDownloadURL()
+    .then(res => {
+      this.setState({url: res})
+    })
   }
 
   openPicker(){
@@ -54,6 +64,7 @@ export default class RNF extends Component {
         })
         .then(() => {
           uploadBlob.close()
+          console.log('copy this', imageRef.getDownloadURL())
           return imageRef.getDownloadURL()
         })
         .then((url) => {
@@ -76,6 +87,9 @@ export default class RNF extends Component {
       console.log(error)
     })
 }
+
+
+
   render() {
     const dpr = this.state.dp ? (<TouchableOpacity onPress={ () => this.openPicker() }><Image
          style={{width: 100, height: 100, margin: 5}}
@@ -94,6 +108,13 @@ export default class RNF extends Component {
     return (
       <View style={styles.container}>
         { dps }
+        <View>
+          {this.state.url ? 
+          <Image source={{uri: this.state.url}} style={{height: 100, width: 100}} /> 
+        : null}
+        <Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/fir-realtime-db-4eadb.appspot.com/o/12345%2Fdp.jpg?alt=media&token=d6cd6073-2919-4c44-9c51-8e5279b48fe9"}} style={{height: 100, width: 100}} />
+          <Text>Placeholder</Text>
+        </View>
       </View>
     );
   }

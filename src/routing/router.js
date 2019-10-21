@@ -10,6 +10,7 @@ import CustomerSupport from '../screens/CustomerSupport';
 import Messages from '../screens/Messages';
 import Users from '../screens/Users';
 import Loading from '../screens/Loading';
+import ImageUpload from '../screens/ImageUpload';
 
 // const finalDrawer = createStackNavigator({
 //   Drawer: Drawer
@@ -27,10 +28,15 @@ const CustomerSupportStuff = createStackNavigator({
   CustomerSupport
 })
 
+const ImageStuff = createStackNavigator({
+  ImageUpload
+})
+
 const BottomNavigator = createBottomTabNavigator({
     Users: UserStuff,
     Messages: MessagesStuff,
     CustomerSupport: CustomerSupportStuff,
+    ImageUpload: ImageStuff,
 }, {
    initialRouteName: 'Messages',
     
